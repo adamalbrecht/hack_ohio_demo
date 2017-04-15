@@ -27,7 +27,6 @@ class RestaurantView extends Component {
   static propTypes = {
     restaurant: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
-      icon: React.PropTypes.string.isRequired,
       opening_hours: React.PropTypes.shape({
         open_now: React.PropTypes.bool.isRequired
       })
