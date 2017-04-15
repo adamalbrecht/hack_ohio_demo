@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Button, ActivityIndicator } from 'react-native';
-import { Constants, MapView } from 'expo';
+import { Constants } from 'expo';
 import Colors from './Colors';
 import LoadingScreen from './LoadingScreen';
+import RestaurantMap from './RestaurantMap';
 import RestaurantList from './RestaurantList';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyCzqO7J9gx9dXiFEj0FgsJ6f2FoRBC4YXY';
@@ -35,7 +36,6 @@ export default class App extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        // alert(JSON.stringify(pos))
         this.setState({
           mapRegion: {
             latitude: pos.coords.latitude,
@@ -53,20 +53,19 @@ export default class App extends Component {
 
   render() {
     if (this.state.mapLoading) {
-      return (
-        <View />
-      );
+      return null;
     } else {
       return (
         <View style={styles.container}>
-          <MapView
-            style={styles.mapStyles}
+          <RestaurantMap
             region={this.state.mapRegion}
-            onRegionChange={this.handleMapRegionChange} />
+            onRegionChangeComplete={this.handleMapRegionChange}
+            restaurants={this.state.restaurantResults} />
+          <Text>{ this.displayMapCoordinates() }</Text>
           <Button
             onPress={this.searchForPizzaRestaurants}
             disabled={this.state.isSearching}
-            title={this.state.isSearching ? "Searching..." : "Find Me Some Pizza"}
+            title={this.state.isSearching ? "Searching..." : "Find Me Some Pizza!"}
             style={styles.buttonStyles}
             color={Colors.blue} />
           { this.state.isSearching ? <ActivityIndicator /> : <RestaurantList restaurants={this.state.restaurantResults} /> }
@@ -76,7 +75,7 @@ export default class App extends Component {
   }
 
   handleMapRegionChange = mapRegion => {
-    // this.setState({ mapRegion: mapRegion });
+    this.setState({ mapRegion: mapRegion });
     // this.searchForRestaurants(mapRegion.latitude, mapRegion.longitude);
   };
 
@@ -95,7 +94,8 @@ export default class App extends Component {
   }
 
   displayMapCoordinates() {
-    return `Lat: ${(Math.round(this.state.mapRegion.latitude * 100) / 100)}, Lng: ${(Math.round(this.state.mapRegion.longitude * 100) / 100)}`;
+    var r = 10000;
+    return `Lat: ${(Math.round(this.state.mapRegion.latitude * r) / r)}, Lng: ${(Math.round(this.state.mapRegion.longitude * r) / r)}`;
   }
 }
 
@@ -105,22 +105,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: Colors.bgColor,
-  },
-  mapStyles: {
-    alignSelf: 'stretch',
-    height: 200,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: Colors.borderColor
-  },
-  coordinates: {},
-  searchResultsWrapper: {
-    marginTop: 10,
-    marginLeft: 5,
-    marginRight: 5,
-    width: '100%'
-  },
-  searchResultsTitle: {
-    fontWeight: 'bold'
   }
 });

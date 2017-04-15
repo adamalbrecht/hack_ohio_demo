@@ -4181,6 +4181,10 @@ react-deep-force-update@^1.0.0:
   dependencies:
     eventemitter3 "^2.0.2"
 
+react-native-maps@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.14.0.tgz#f0b928f0bef5036472dcd8175f14838884962cad"
+
 "react-native-maps@https://github.com/exponent/react-native-maps/archive/v0.12.2-exp.1.tar.gz":
   version "0.12.2"
   resolved "https://github.com/exponent/react-native-maps/archive/v0.12.2-exp.1.tar.gz#1984bfe5a8a341dd3b44ad565cfcd1b25a5c2b03"
